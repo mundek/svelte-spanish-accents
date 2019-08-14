@@ -272,29 +272,21 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (118:2) {:else}
+    // (94:2) {:else}
     function create_else_block(ctx) {
-    	var div, t0_value = ctx.aLetter, t0, t1, dispose;
+    	var div, t_value = ctx.aLetter, t;
 
     	return {
     		c: function create() {
     			div = element("div");
-    			t0 = text(t0_value);
-    			t1 = space();
-    			attr(div, "class", "letterNoHover svelte-1y6lohm");
-    			attr(div, "id", `${ctx.i}letter`);
-    			add_location(div, file, 118, 3, 3406);
-
-    			dispose = [
-    				listen(div, "mouseover", stop_propagation(highlight)),
-    				listen(div, "mouseout", stop_propagation(resetColor))
-    			];
+    			t = text(t_value);
+    			attr(div, "class", "letterNoHover svelte-1fygl72");
+    			add_location(div, file, 94, 3, 2215);
     		},
 
     		m: function mount(target, anchor) {
     			insert(target, div, anchor);
-    			append(div, t0);
-    			append(div, t1);
+    			append(div, t);
     		},
 
     		p: noop,
@@ -303,13 +295,11 @@ var app = (function () {
     			if (detaching) {
     				detach(div);
     			}
-
-    			run_all(dispose);
     		}
     	};
     }
 
-    // (110:2) {#if isAVowel(aLetter)}
+    // (87:2) {#if isAVowel(aLetter)}
     function create_if_block(ctx) {
     	var div, t0_value = ctx.aLetter, t0, t1, dispose;
 
@@ -318,9 +308,8 @@ var app = (function () {
     			div = element("div");
     			t0 = text(t0_value);
     			t1 = space();
-    			attr(div, "class", "letterNoHover svelte-1y6lohm");
-    			attr(div, "id", `${ctx.i}letter`);
-    			add_location(div, file, 110, 3, 3183);
+    			attr(div, "class", "letterNoHover svelte-1fygl72");
+    			add_location(div, file, 87, 3, 2015);
 
     			dispose = [
     				listen(div, "mouseover", stop_propagation(highlight)),
@@ -347,7 +336,7 @@ var app = (function () {
     	};
     }
 
-    // (109:1) {#each letterArray as aLetter, i}
+    // (86:1) {#each letterArray as aLetter, i}
     function create_each_block(ctx) {
     	var if_block_anchor;
 
@@ -411,8 +400,8 @@ var app = (function () {
     			for (var i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
-    			attr(div, "class", "container svelte-1y6lohm");
-    			add_location(div, file, 107, 0, 3095);
+    			attr(div, "class", "container svelte-1fygl72");
+    			add_location(div, file, 84, 0, 1927);
     		},
 
     		l: function claim(nodes) {
@@ -470,23 +459,13 @@ var app = (function () {
     let ltrHvr = "display: inline-block; margin: 3px; padding: 1px; font-size: 3em; color: #222222; background-color: #ddd; cursor: pointer;";
 
     function highlight(event) {
-    	//console.table(event.target);
     	let aVowel = event.target.textContent.match(/[aeiou]/g);
-    	// if(aVowel) {
-    	// 	event.target.textContent = addAccentHash[aVowel];
-    	// }
-    	// event.target.classList.toggle("letterHover");
     	event.target.style = ltrHvr;
     }
 
     function resetColor(event) {
-    	// console.table(event);
     	let aVowel = event.target.textContent.match(/[áéíóú]/g);
-    	// if(aVowel) {
-    	// 	event.target.textContent = removeAccentHash[aVowel];
-    	// }
     	event.target.style = noLtrHvr;
-    	// event.target.classList.toggle("letterHover");
     }
 
     function isAVowel(vowel) {
@@ -517,10 +496,7 @@ var app = (function () {
     	function clearAccents() {
     		let allDivs = document.getElementsByTagName("div");
     		let allDivsArr = [...allDivs].filter(aDiv => aDiv.className.match(/letter/g));
-    		// console.table(allDivs);
-    		allDivsArr.forEach((element, i) => {
-    			// console.log("i: " + i + " - " + element.textContent + " - letter?: " + (element.className.match(/letter/g)));
-    			console.log("element.textContent: " + element.textContent + " - " + addAccentHash[element.textContent.trim()]);
+    		allDivsArr.forEach(element => {
     			if(removeAccentHash[element.textContent.trim()]) {
     				element.textContent = removeAccentHash[element.textContent.trim()];
     			}	
@@ -528,20 +504,13 @@ var app = (function () {
     	}
 
     	function toggleAccent(event) {
-    		let charIndex = Number.parseInt(event.target.id);
     		let aVowel = event.target.textContent.match(/[aáeéiíoóuú]/g);
-    		console.log("togAcc: " + event.target.textContent + "-addAccentHash[aVowel]: " + addAccentHash[aVowel]);
     		if(addAccentHash[aVowel]) {
     			clearAccents();
-    			console.log(charIndex, aVowel, addAccentHash[aVowel], removeAccentHash[aVowel]);
     			event.target.textContent = addAccentHash[aVowel];
-    			// aWord = aWord.slice(0, charIndex) + addAccentHash[aVowel] + aWord.slice(charIndex + 1);
     		} else {
-    			console.log(charIndex, aVowel, addAccentHash[aVowel], removeAccentHash[aVowel]);
     			event.target.textContent = removeAccentHash[aVowel];
-    			// aWord = aWord.slice(0, charIndex) + removeAccentHash[aVowel] + aWord.slice(charIndex + 1);
     		}
-    		// console.log(aWord);
     	}
 
     	return { letterArray, toggleAccent };
