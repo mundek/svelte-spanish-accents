@@ -1,4 +1,5 @@
 .DS_Store
+/cruft-and-stuff
 /node_modules
 /public/bundle.*
 .directory
