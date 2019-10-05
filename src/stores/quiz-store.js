@@ -1,8 +1,11 @@
 import { readable, writable } from 'svelte/store';
 
-export appTitle = readable('Hello Appy');
-export wordList = writable([
+export const appTitle = readable('Hello Appy');
+export const wordList = writable([
+    'funciona',
     'función',
     'esdrújula',
     'reloj'
 ]);
+export const userResponses = writable([]);
+export const totalCorrect = writable(0);

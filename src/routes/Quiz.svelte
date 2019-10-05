@@ -2,7 +2,10 @@
     import { onMount } from 'svelte';
     import { replace } from 'svelte-spa-router';
 
+	// import Letter from '../widgets/Letter.svelte';
+
     import { 
+        appTitle,
         wordList,
         userResponses,
         totalCorrect
@@ -34,43 +37,43 @@
     }
 
 
-    function validateInput() {
-        if(currentResponse) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // function validateInput() {
+    //     if(currentResponse) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
-    function submitAnswer(event) {
-        if (!validateInput()) { return false; }
+    // function submitAnswer(event) {
+    //     if (!validateInput()) { return false; }
 
-        if(event.key === 'Enter' || event.type === "submit") {
-            if(currentResponse === $wordList[questionCounter]) {
-                $totalCorrect++;
-            }
-            $userResponses[questionCounter] = currentResponse;
-            console.log($wordList.length, questionCounter);
-            questionCounter++;
-            currentResponse = '';
+    //     if(event.key === 'Enter' || event.type === "submit") {
+    //         if(currentResponse === $wordList[questionCounter]) {
+    //             $totalCorrect++;
+    //         }
+    //         $userResponses[questionCounter] = currentResponse;
+    //         console.log($wordList.length, questionCounter);
+    //         questionCounter++;
+    //         currentResponse = '';
 
-            if($wordList.length > questionCounter) {
-                sayCurrentWord();
-            } else {
-                presentResults();
-            }
-        }
-    }
+    //         if($wordList.length > questionCounter) {
+    //             sayCurrentWord();
+    //         } else {
+    //             presentResults();
+    //         }
+    //     }
+    // }
 
-    function presentResults() {
-        // use function imported from svelte-spa-router
-        // to navigate to the results component path
-        replace("/results");
-    }
+    // function presentResults() {
+    //     // use function imported from svelte-spa-router
+    //     // to navigate to the results component path
+    //     replace("/results");
+    // }
 </script>
 
 <style>
-    .playSound, .submitButton, .endQuiz {
+    /* .playSound, .submitButton, .endQuiz {
         border-radius: 3px;
         border: 1px solid #00E;
         display: inline-block;
@@ -84,9 +87,12 @@
         border: 1px solid #00E;
         display: inline-block;
         padding: auto;
-    }
+    } */
 </style>
 
+
+
+<!--
 {#if $wordList}
     <form on:submit|preventDefault="{submitAnswer}">
         <label for="numberInput">Enter the number you hear</label>
@@ -126,3 +132,4 @@
 {/if}
 <p>{$totalCorrect} correct ({percentageCorrect}%)</p>
 <p>{$numberList.length - questionCounter} of {$numberList.length} remaining</p>
+-->
