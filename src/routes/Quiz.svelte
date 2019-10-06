@@ -2,13 +2,14 @@
     import { onMount } from 'svelte';
     import { replace } from 'svelte-spa-router';
 
-	// import Letter from '../widgets/Letter.svelte';
+	import Word from '../widgets/Word.svelte';
 
     import { 
         appTitle,
         wordList,
         userResponses,
-        totalCorrect
+        totalCorrect,
+        audioIconPath
     } from '../stores/quiz-store.js';
 
     let currentResponse = "";
@@ -36,44 +37,43 @@
         }
     }
 
+    function validateInput() {
+        if(currentResponse) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-    // function validateInput() {
-    //     if(currentResponse) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    function submitAnswer(event) {
+        if (!validateInput()) { return false; }
 
-    // function submitAnswer(event) {
-    //     if (!validateInput()) { return false; }
+        if(event.key === 'Enter' || event.type === "submit") {
+            if(currentResponse === $wordList[questionCounter]) {
+                $totalCorrect++;
+            }
+            $userResponses[questionCounter] = currentResponse;
+            console.log($wordList.length, questionCounter);
+            questionCounter++;
+            currentResponse = '';
 
-    //     if(event.key === 'Enter' || event.type === "submit") {
-    //         if(currentResponse === $wordList[questionCounter]) {
-    //             $totalCorrect++;
-    //         }
-    //         $userResponses[questionCounter] = currentResponse;
-    //         console.log($wordList.length, questionCounter);
-    //         questionCounter++;
-    //         currentResponse = '';
+            if($wordList.length > questionCounter) {
+                sayCurrentWord();
+            } else {
+                presentResults();
+            }
+        }
+    }
 
-    //         if($wordList.length > questionCounter) {
-    //             sayCurrentWord();
-    //         } else {
-    //             presentResults();
-    //         }
-    //     }
-    // }
-
-    // function presentResults() {
-    //     // use function imported from svelte-spa-router
-    //     // to navigate to the results component path
-    //     replace("/results");
-    // }
+    function presentResults() {
+        // use function imported from svelte-spa-router
+        // to navigate to the results component path
+        replace("/results");
+    }
 </script>
 
 <style>
-    /* .playSound, .submitButton, .endQuiz {
+    .playSound, .submitButton, .endQuiz {
         border-radius: 3px;
         border: 1px solid #00E;
         display: inline-block;
@@ -81,39 +81,20 @@
         color: #ff0000;
         padding: auto;
     }
-
-    .numberInput {
-        border-radius: 3px;
-        border: 1px solid #00E;
-        display: inline-block;
-        padding: auto;
-    } */
 </style>
 
-
-
-<!--
 {#if $wordList}
     <form on:submit|preventDefault="{submitAnswer}">
-        <label for="numberInput">Enter the number you hear</label>
+        <h3>Correctly indicate the written accent of the word, if any</h3>
         <button class="playSound"
             type="button" 
-            on:click="{sayCurrentNumber}">
+            on:click="{sayCurrentWord}">
             <img src={$audioIconPath} 
                 alt="play sound" 
                 width="20px" height="20px" 
             />
         </button>
-        <input type="number" 
-            class="numberInput"
-            name="numberInput"
-            bind:value="{currentResponse}"
-            on:keyup={submitAnswer}
-            min={$numberLimits.lower} max={$numberLimits.higher}
-            alt="input the number you hear"
-            placeholder="#?"
-            autofocus
-        />
+        <Word aWord={$wordList[questionCounter]}/>
         <button class="submitButton"
             type="submit"
             on:submit="{submitAnswer}">
@@ -131,5 +112,4 @@
     <h3>Error: No number list!</h3>
 {/if}
 <p>{$totalCorrect} correct ({percentageCorrect}%)</p>
-<p>{$numberList.length - questionCounter} of {$numberList.length} remaining</p>
--->
+<p>{$wordList.length - questionCounter} of {$wordList.length} remaining</p>

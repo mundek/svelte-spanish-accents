@@ -80,9 +80,9 @@
     } */
 </style>
 
-<form>
 <h1>Start.svelte</h1>
 <!--
+<form>
     <div class="container">
         <div class="lowest">
             <label for="setMin">Lowest number in quiz</label>
@@ -109,5 +109,5 @@
             <button on:click|preventDefault="{startQuiz}">Start Quiz</button>
         </div>    
     </div>
--->
 </form>
+-->

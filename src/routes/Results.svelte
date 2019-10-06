@@ -50,6 +50,7 @@
     } */
 </style>
 
+<h1>Results.svelte</h1>
 <!--
 <h3>RESULTS: {Number.parseInt(($totalCorrect/$numberList.length) * 100)}% correct 
     <span style="color: #d8d8d8;">({$totalCorrect} of {$numberList.length})</span>
