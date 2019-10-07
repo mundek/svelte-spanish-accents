@@ -21,10 +21,9 @@
 	// 	{ id: 'results', text: `Results` },
 	// 	{ id: 'WRONG', text: `Bad Path` }
 	// ];
-	</script>
+</script>
 
 <style>
-
 </style>
 
 <!-- The form and select tag are development/testing code 
@@ -41,7 +40,9 @@
 
 <!-- App state managed with Router component-->
 <div style="width: 700px;">
-	<h1>Práctica: Los acentos escritos</h1>
+	<h1 style="margin: 1px 1px; padding: 1px;">
+		Práctica: Los acentos escritos
+	</h1>
 	<Router routes={$routes}/>
 	<hr/>
 </div>	

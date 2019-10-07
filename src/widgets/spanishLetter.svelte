@@ -1,5 +1,14 @@
 <script>
-	export let aLetter = "a";
+// TODO: https://svelte.dev/tutorial/event-forwarding
+// - to get events from letter component to quiz component, the word component must forward them
+// - allows maintenance of current state of word (accent placement)
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
+	import { questionCounter } from '../stores/quiz-store.js';
+
+	export let aLetter = "?";
+
 	let addAccentHash = {
 		'a': 'á',
 		'e': 'é',
@@ -14,8 +23,8 @@
 		'ó': 'o',
 		'ú': 'u'
 	}
-	let noLtrHvr = "display: inline-block; margin: 3px; padding: 1px; font-size: 3em; color: #dddddd; background-color: #fff; cursor: pointer;";
-	let ltrHvr = "display: inline-block; margin: 3px; padding: 1px; font-size: 3em; color: #222222; background-color: #ddd; cursor: pointer;";
+	let noLtrHvr = "display: inline-block; margin: 3px; padding: 1px; font-family: monospace; font-size: 2em; color: #dddddd; background-color: #fff; cursor: pointer;";
+	let ltrHvr = "display: inline-block; margin: 3px; padding: 1px; font-family: monospace; font-size: 2em; color: #222222; background-color: #ddd; cursor: pointer;";
 
 	let hovering = false;
 
@@ -28,13 +37,16 @@
 	}
 
 	function isAVowel(vowel) {
-		if (vowel.match(/[aeiou]/g)) {
-			return true;
+		if (typeof vowel === 'string' || vowel instanceof String) {
+			if (vowel.match(/[aeiou]/g)) {
+				return true;
+			}
 		}
 		return false;
 	}
 
 	function clearAccents() {
+		// console.log("clearing " + aLetter);
 		let allDivs = document.getElementsByTagName("div");
 		let allDivsArr = [...allDivs].filter(aDiv => aDiv.className.match(/letter/g));
 		allDivsArr.forEach(element => {
@@ -46,12 +58,17 @@
 
 	function toggleAccent(event) {
 		let aVowel = event.target.textContent.match(/[aáeéiíoóuú]/g);
+		// console.log(event.target.id);
 		if(addAccentHash[aVowel]) {
 			clearAccents();
 			event.target.textContent = addAccentHash[aVowel];
 		} else {
 			event.target.textContent = removeAccentHash[aVowel];
 		}
+		dispatch('letterUpdate', {
+			letterID: event.target.id,
+			newLetter: event.target.textContent
+		});
 	}
 </script>
 
@@ -64,7 +81,8 @@
 		display: inline-block;
 		margin: 3px;
 		padding: 1px;
-		font-size: 3em;
+		font-family: monospace;
+		font-size: 2em;
 		color: #222222;
 		background-color: #ddd;
 		cursor: pointer;
@@ -79,9 +97,10 @@
 		display: inline-block;
 		margin: 3px;
 		padding: 1px;
-		font-size: 3em;
+		font-size: 2em;
+		font-family: monospace;
 		color: #dddddd;
-		background-color: #fff;
+		background-color: blue;
 		cursor: pointer;
 	}
 </style>
