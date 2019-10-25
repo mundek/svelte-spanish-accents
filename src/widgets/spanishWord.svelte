@@ -2,33 +2,33 @@
 	import Letter from '../widgets/spanishLetter.svelte';
 	import { 
 		currentResponse,
-		questionCounter
+		questionCounter,
+		wordList
 	} from '../stores/quiz-store.js';
 
 	// Svelte: component parameter exposed to parent component
-	export let words = ["????????"]; // default value used when no word is passed
+	export let word = "????????"; // default value used when no words are passed
+	console.log("word: " + word);
 
-	let theLetters = words[$questionCounter].split("");
-	let plainLetters = theLetters.map(function(letter, idx) {
- 		return [ {id: idx, character: removeAccentedVowels(letter)} ];
+	let theLetters = word.split("").map(function(letter, i) {
+		return [i, removeAccentedVowels(letter)];
 	});
-	// console.log(plainLetters);
+	console.log("theLetters: " + theLetters);
 
-	$: if($questionCounter < words.length) {
+	$: if($questionCounter < $wordList.length) {
 		console.log("questionCounter changed");
-		theLetters = words[$questionCounter].split("");
-		plainLetters = [];
-		plainLetters = theLetters.map(function(letter, idx) {
-	 		return [ {id: idx, character: removeAccentedVowels(letter)} ];
-		});
-		console.log(plainLetters);
+		theLetters = word.split("").map(function(letter, i) {
+			return [i, removeAccentedVowels(letter)];
+		});;
+		// console.table(theLetters);
 	}
 
 	// set currentResponse (quiz-store.js) to unaccented form of word
-	$currentResponse = plainLetters.map(letter => letter.character).join('');
+	$currentResponse = theLetters.map(letter => letter.character).join('');
 
 	// utility function: remove only accents over vowels from Spanish words
 	function removeAccentedVowels(str) {
+		console.log("str: " + str);
 		// adapted from stackoverflow: https://stackoverflow.com/questions/286921/efficiently-replace-all-accented-characters-in-a-string
 		// only matches Spanish vowels; does NOT remove 'crema' from \u00DC or \u00FC (Ü and ü, respectively)
 		var spanishAccentsRemovalMap = [
@@ -50,14 +50,14 @@
 	}
 
 	function updateCurrentInput(event) {
-		// console.log(event);
-		let newLetters = theLetters.map(function(letter) {
- 			return removeAccentedVowels(letter);
+		console.log(event);
+		let newLetters = theLetters.map(function(letter, i) {
+ 			return [i, removeAccentedVowels(letter[1])];
 		});
 		newLetters[event.detail.letterID] = event.detail.newLetter
 		$currentResponse = newLetters.join('');
 		console.log(newLetters.join(''));
-		console.log($currentResponse == words[$questionCounter]);
+		console.log($currentResponse === $wordList[$questionCounter]);
 	}
 </script>
 
@@ -74,8 +74,8 @@
 </style>
 
 <div class="letterContainer">
-	{#each plainLetters as aLetter (aLetter.id)}
-		<Letter aLetter={aLetter.character} on:letterUpdate={updateCurrentInput}/>
-		
+	{#each theLetters as aLetter (aLetter[0])}
+		<Letter aLetter={aLetter[1]} anId={aLetter[0]} on:letterUpdate={updateCurrentInput}/>
+	<!-- {aLetter[1]} -->
 	{/each}
 </div>

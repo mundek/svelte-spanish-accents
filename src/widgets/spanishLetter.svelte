@@ -8,6 +8,8 @@
 	import { questionCounter } from '../stores/quiz-store.js';
 
 	export let aLetter = "?";
+	const initialLetter = aLetter;
+	export let anId = 999;
 
 	let addAccentHash = {
 		'a': 'á',
@@ -27,10 +29,6 @@
 	let ltrHvr = "display: inline-block; margin: 3px; padding: 1px; font-family: monospace; font-size: 2em; color: #222222; background-color: #ddd; cursor: pointer;";
 
 	let hovering = false;
-
-	function highlight(event) {
-		event.target.style = ltrHvr;
-	}
 
 	function resetColor(event) {
 		event.target.style = noLtrHvr;
@@ -58,7 +56,7 @@
 
 	function toggleAccent(event) {
 		let aVowel = event.target.textContent.match(/[aáeéiíoóuú]/g);
-		// console.log(event.target.id);
+		console.log(event.target.id);
 		if(addAccentHash[aVowel]) {
 			clearAccents();
 			event.target.textContent = addAccentHash[aVowel];
@@ -106,12 +104,16 @@
 </style>
 
 {#if isAVowel(aLetter)}
-	<div class={hovering ? 'letterHover' : 'letterNoHover'}
-		on:mouseover|stopPropagation="{() => hovering = true}"
+	<div id={anId} class={hovering ? 'letterHover' : 'letterNoHover'}
+		on:mouseover|stopPropagation="{() => {
+			hovering = true;
+			console.log(this.id);
+			}
+		}"
 		on:mouseout|stopPropagation="{() => hovering = false}"
 		on:click|stopPropagation="{toggleAccent}">
 			{aLetter}
 	</div>
 {:else}
-	<div class="letterNoHover">{aLetter}</div>
+	<div id={anId} class="letterNoHover">{aLetter}</div>
 {/if}
