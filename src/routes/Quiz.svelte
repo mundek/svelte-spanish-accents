@@ -1,13 +1,14 @@
 <script>
-    import { onMount } from 'svelte';
+    import { onMount, tick } from 'svelte';
     import { replace } from 'svelte-spa-router';
 
 	import Word from '../widgets/spanishWord.svelte';
 
     import {
         wordList,
-        currentResponse,
+        currentWord,
         questionCounter,
+        currentResponse,
         userResponses,
         totalCorrect,
         audioIconPath
@@ -15,7 +16,6 @@
     // console.log($wordList);
 
     let percentageCorrect = 0;
-    let wordVisible = true;
 
     $: if ($questionCounter > 0) {
         percentageCorrect = (Number.parseInt(($totalCorrect / $questionCounter) * 100));
@@ -23,40 +23,42 @@
         percentageCorrect = '0';
         }
 
-    $: displayedWord = $wordList[$questionCounter];
+    $: $currentWord = $wordList[$questionCounter];
 
-    // $numberList[0] = 911; // Responsive voice literally says "nueve uno uno" for the number '911'!
+    $: if ($questionCounter) {
+        sayCurrentWord();
+    }
 
     onMount(() => {
+        console.log('onMount()');
         // get things started by saying the first number when component mounts
         sayCurrentWord();
     });
 
     function sayCurrentWord() {
-        if($wordList[$questionCounter]) {
+        if($currentWord) {
             window.responsiveVoice.speak(
-                $wordList[$questionCounter],
+                $currentWord,
                 "Spanish Latin American Female");
         }
     }
 
-    function submitAnswer(event) {
-        console.log('submitAnswer');
-        console.log($currentResponse == $wordList[$questionCounter]);
+    async function submitAnswer(event) {
+        // console.log('submitAnswer');
+        // console.log($currentResponse == $wordList[$questionCounter]);
         // console.table(Word);
         if(event.key === 'Enter' || event.type === "submit") {
-            if($currentResponse === $wordList[$questionCounter]) {
+            if($currentResponse === $currentWord) {
                 $totalCorrect++;
             }
             $userResponses[$questionCounter] = $currentResponse;
-            $questionCounter++;
             $currentResponse = '';
-            wordVisible = false;
-            console.log($wordList.length, $questionCounter);
+            $currentWord = '';
+            await tick();
+            $questionCounter++;
 
             if($wordList.length > $questionCounter) {
                 sayCurrentWord();
-                wordVisible = true;
             } else {
                 presentResults();
             }
@@ -94,45 +96,46 @@
 		grid-auto-columns: fit-content(1em);
 		grid-auto-flow: column;
         justify-content: center;
-		background-color: blue;
+		background-color:#3333ff;
 		margin: 13px 1px;
 	}
 </style>
 
-{#if wordVisible}
-    {#if displayedWord}
-        <form on:submit|preventDefault="{submitAnswer}">
-            <h3 style="margin: 1px 1px; padding: 1px;">
-                Correctly indicate the written accent of the word, if any [{$wordList[$questionCounter]}]
-            </h3>
-            <div class="wordContainer">
-                <Word word={displayedWord}/>
-            </div>
-            <button class="playSound"
-                type="button" 
-                on:click="{sayCurrentWord}">
-                <img src={$audioIconPath} 
-                    alt="play sound" 
-                    width="20px" height="20px" 
-                />
-            </button>
-            <button class="submitButton"
-                type="submit"
-                on:submit="{submitAnswer}">
-                Check
-            </button>
-                    <button class="endQuiz"
-                type="button"
-                on:click="{presentResults}">
-                End
-            </button>
-        </form>
-    {:else}
-        <h1>QUIZ</h1>
-        <h3>Error: No number list!</h3>
-    {/if}
+{#if $currentWord}
+    <form on:submit|preventDefault="{submitAnswer}">
+        <h3 style="margin: 1px 1px; padding: 1px;">
+            Correctly indicate the written accent of the word, if any
+        </h3>
+        <p>
+            currentWord: <span style="color: #ff0000;">{$currentWord}</span> | 
+            currentResponse: <span style="color: #6666ff;">{$currentResponse}</span>
+        </p>
+
+        <div class="wordContainer">
+            <Word />
+        </div>
+        <button class="playSound"
+            type="button" 
+            on:click="{sayCurrentWord}">
+            <img src={$audioIconPath} 
+                alt="play sound" 
+                width="20px" height="20px" 
+            />
+        </button>
+        <button class="submitButton"
+            type="submit"
+            on:submit="{submitAnswer}">
+            Check
+        </button>
+                <button class="endQuiz"
+            type="button"
+            on:click="{presentResults}">
+            End
+        </button>
+    </form>
 {:else}
-<h1>????????</h1>
+    <h1>QUIZ</h1>
+    <h3>Error: No word!</h3>
 {/if}
 <p>{$totalCorrect} correct ({percentageCorrect}%)</p>
 <p>{$wordList.length - $questionCounter} of {$wordList.length} remaining</p>

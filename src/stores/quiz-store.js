@@ -7,8 +7,9 @@ export const wordList = writable([
     'albóndigas',
     'reloj'
 ]);
-export const userResponses = writable([]);
-export const totalCorrect = writable(0);
+export const currentWord = writable('?');
 export const currentResponse = writable("");
+export const userResponses = writable([]);
 export const questionCounter = writable(0);
+export const totalCorrect = writable(0);
 export const audioIconPath = readable('images/iconfinder_volume-24_103167.png');
