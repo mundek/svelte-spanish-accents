@@ -1,20 +1,21 @@
 <script>
-	// routed components must be in the ./routes folder
+	// enable routing - routed components must be in the ./routes folder
+	// Package source: https://www.npmjs.com/package/svelte-spa-router
 	import Router from 'svelte-spa-router';
 
 	// configure routing
 	import { routes } from './stores/route-store.js';
+	import { replace } from 'svelte-spa-router'
 
-	// 'replace' function allows programatic setting of routes
-	import { replace } from 'svelte-spa-router';
-
-	let selected = { id: 'quiz', text: `Quiz` };
+	// configure default route
+	let selected = { id: '', text: 'Start'};
 
 	$: {
+		// 'replace' function allows programatic setting/redirection of routes
 		replace(`/${selected.id}`);
 	}
 
-	// all following code is development/debugging code
+	// all remaining script-tag code is development/debugging code
 	// let options = [
 	// 	{ id: '', text: `Start` },
 	// 	{ id: 'quiz', text: `Quiz` },
@@ -26,7 +27,7 @@
 <style>
 </style>
 
-<!-- The form and select tag are development/testing code 
+<!-- The following form and select tags are development/testing code 
 <form>
 	<select bind:value={selected}>
 		{#each options as anOption}

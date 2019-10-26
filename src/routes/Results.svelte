@@ -1,11 +1,13 @@
 <script>
-    // import { replace } from 'svelte-spa-router';
+    import { replace } from 'svelte-spa-router';
     // import ResultsRightWrong from '../widgets/ResultsRightWrong.svelte';
 
-    // import {
-    //     numberList, userResponses, totalCorrect
-    // } from '../stores/quiz-store.js';
-    // console.log($numberList);
+    import {
+        wordList,
+        userResponses,
+        totalCorrect
+    } from '../stores/quiz-store.js';
+    console.table($userResponses);
 
     // $: columnCount = Math.ceil(Number.parseInt($numberList.length) / 10);
 
