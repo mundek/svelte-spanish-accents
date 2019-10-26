@@ -45,29 +45,32 @@
 
     async function submitAnswer(event) {
         // console.log('submitAnswer');
-        // console.log($currentResponse == $wordList[$questionCounter]);
-        // console.table(Word);
-        if(event.key === 'Enter' || event.type === "submit") {
-            if($currentResponse === $currentWord) {
-                $totalCorrect++;
-            }
-            $userResponses[$questionCounter] = $currentResponse;
-            $currentResponse = '';
-            $currentWord = '';
-            await tick();
-            $questionCounter++;
 
-            if($wordList.length > $questionCounter) {
-                sayCurrentWord();
-            } else {
-                presentResults();
-            }
+        // evaluate user's response against correct answer
+        if($currentResponse === $currentWord) {
+            $totalCorrect++;
+        }
+        // record user's response for post-quiz results output
+        $userResponses[$questionCounter] = $currentResponse;
+
+        // clear $currentResponse and $currentWord and 'await' update of DOM
+        $currentResponse = '';
+        $currentWord = '';
+        await tick();
+
+        // update $questionCounter after DOM update to ensure clean update of new Word (spanishWord.svelete); Word subcomponent is internally bound to $questionCounter updates
+        $questionCounter++;
+
+        // check for end of quiz; re-route to Results.svelte when finished
+        if($wordList.length > $questionCounter) {
+            sayCurrentWord();
+        } else {
+            presentResults();
         }
     }
 
     function presentResults() {
-        // use function imported from svelte-spa-router
-        // to navigate to the results component path
+        // use function imported from svelte-spa-router to navigate to the results component path
         replace("/results");
     }
 </script>
@@ -106,12 +109,15 @@
         <h3 style="margin: 1px 1px; padding: 1px;">
             Correctly indicate the written accent of the word, if any
         </h3>
-        <p>
+
+        <!-- Debugging output -->
+        <!-- <p>
             currentWord: <span style="color: #ff0000;">{$currentWord}</span> | 
             currentResponse: <span style="color: #6666ff;">{$currentResponse}</span>
-        </p>
+        </p> -->
 
         <div class="wordContainer">
+            <!-- Word component imports necessary quiz-store.js data itself; binds to $questionCounter from quiz-store.js to update to current word-->
             <Word />
         </div>
         <button class="playSound"

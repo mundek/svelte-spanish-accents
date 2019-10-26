@@ -46,13 +46,13 @@
     } */
 </style>
 
-<h3>RESULTS: {Number.parseInt(($totalCorrect/$wordList.length) * 100)}% correct 
-    <span style="color: #d8d8d8;">({$totalCorrect} of {$wordList.length})</span>
+<h3>RESULTS: {Number.parseInt(($totalCorrect/$userResponses.length) * 100)}% correct 
+    <span style="color: #d8d8d8;">({$totalCorrect} of {$userResponses.length})</span>
 </h3>
 <div style="column-count: {columnCount}; columns: {columnCount};">
     <ul>
-    {#each $wordList as aWord, i}
-        <li>{aWord} | {$userResponses[i]}</li>
+    {#each $userResponses as aResponse, i}
+        <li>{$wordList[i]} | {aResponse}</li>
     {/each}
     </ul>
 </div>

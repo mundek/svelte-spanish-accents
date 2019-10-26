@@ -2,24 +2,23 @@
     import {removeAccentedVowels, toggleAccent, isAnyVowel} from '../utils/spanish-vowels.js';
 	import {
 		currentWord,
-		currentResponse,
-		questionCounter
+		currentResponse
 	} from '../stores/quiz-store.js';
 
     // set $currentResponse to unaccented version of word whenever $currentWord is updated
-    $:  $currentResponse = $currentWord.split("").map(function(letter, i) {
+    $:  $currentResponse = $currentWord.split("").map(function(letter) {
             return removeAccentedVowels(letter);
             }).join('');
 
     let theLetters = [];
-	$:  theLetters = $currentWord.split("").map(function(letter, i) {
+	$:  theLetters = $currentWord.split("").map(function(letter) {
 		return removeAccentedVowels(letter);
         });
 
     function toggleLetter(event) {
         // get a reference to the character when mouse was clicked
         let aLetter = event.target.innerText;
-        // get DOM references to all elements of class interactiveLetter and iterate over array and clear all accents
+         // get DOM references to all elements of class interactiveLetter and iterate over array and clear all accents
         document.querySelectorAll(".interactiveLetter").forEach(element => {
             element.innerText = removeAccentedVowels(element.innerText)
         });
@@ -34,7 +33,7 @@
         });
         // update store $currentResponse
         $currentResponse = newWord;
-        console.log($currentWord == $currentResponse);
+        // console.log($currentWord == $currentResponse);
     }
 </script>
 
