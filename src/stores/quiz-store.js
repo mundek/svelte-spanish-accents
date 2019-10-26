@@ -7,6 +7,22 @@ export const wordList = writable([
     'albóndigas',
     'reloj'
 ]);
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: ResponsiveVoice pronounces "hablara" as "hablará" 
+// WHAT ELSE does it get wrong?
+//
+// export const wordList = writable([
+//     'hablara',
+//     'hablará',
+//     'tomara',
+//     'contara',
+//     'hable',
+//     'hablé',
+//     'habló',
+//     'hablo'
+// ]);
+
 export const currentWord = writable('?');
 export const currentResponse = writable("");
 export const userResponses = writable([]);

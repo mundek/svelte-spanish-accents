@@ -1,26 +1,27 @@
 <script>
-    // import { replace } from 'svelte-spa-router';
-    // import ResultsRightWrong from '../widgets/ResultsRightWrong.svelte';
+    import { onMount } from 'svelte';
+    import { replace } from 'svelte-spa-router';
+    import ResultsRightWrong from '../widgets/ResultsRightWrong.svelte';
 
-    // import {
-    //     numberList, userResponses, totalCorrect
-    // } from '../stores/quiz-store.js';
-    // console.log($numberList);
+    import {
+        wordList,
+        userResponses,
+        totalCorrect
+    } from '../stores/quiz-store.js';
 
-    // $: columnCount = Math.ceil(Number.parseInt($numberList.length) / 10);
+    onMount (() => {
+        window.responsiveVoice.cancel();
+    });
 
-    // /* 
-    //     // pre-filled lists for debugging
-    //     // $LISTLISTLIST = ['práctico', 'practico', 'practicó']
-    //     // $userResponses = ['práctico', 'practicó', 'practicó']
-    // */
-    // function restartQuiz() {
-    //     replace("/");
-    // }
+    $: columnCount = Math.ceil(Number.parseInt($wordList.length) / 10);
+
+    function restartQuiz() {
+        replace("/");
+    }
 </script>
 
 <style>
-    /* h3 {
+    h3 {
         padding-left: 10px;
         padding-bottom: 10px;
         margin: 0;
@@ -47,25 +48,23 @@
     .restartButton {
         margin-left: auto;
         display: block;
-    } */
+    }
 </style>
 
-<h1>Results.svelte</h1>
-<!--
-<h3>RESULTS: {Number.parseInt(($totalCorrect/$numberList.length) * 100)}% correct 
-    <span style="color: #d8d8d8;">({$totalCorrect} of {$numberList.length})</span>
+<h3>RESULTS: {Number.parseInt(($totalCorrect/$userResponses.length) * 100)}% correct 
+    <span style="color: #d8d8d8;">({$totalCorrect} of {$userResponses.length})</span>
 </h3>
+
 <div style="column-count: {columnCount}; columns: {columnCount};">
     <ul>
-    {#each $numberList as aNumber, i}
-        <li><ResultsRightWrong 
-                aQuizNumber={aNumber} 
-                aQuizResponse={$userResponses[i]} 
-            /></li>
+    {#each $userResponses as aResponse, i}
+        <li><ResultsRightWrong aQuizWord={$wordList[i]} aQuizResponse={aResponse}/></li>
     {/each}
     </ul>
 </div>
+
 <button class="restartButton"
     type="button"
-    on:click="{restartQuiz}">Restart</button>
--->
+    on:click="{restartQuiz}">
+        Restart
+</button>
