@@ -1,4 +1,6 @@
 <script>
+    import { onMount } from 'svelte';
+
 	// enable routing - routed components must be in the ./routes folder
 	// Package source: https://www.npmjs.com/package/svelte-spa-router
 	import Router from 'svelte-spa-router';
@@ -9,6 +11,10 @@
 
 	// configure default route
 	let selected = { id: '', text: 'Start'};
+
+    onMount(() => {
+        window.responsiveVoice.cancel();
+	});
 
 	$: {
 		// 'replace' function allows programatic setting/redirection of routes

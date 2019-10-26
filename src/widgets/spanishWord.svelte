@@ -1,28 +1,36 @@
 <script>
-    import {removeAccentedVowels, toggleAccent, isAnyVowel} from '../utils/spanish-vowels.js';
+    import {
+        removeAccentedVowels, 
+        toggleAccent, 
+        isAnyVowel
+    } from '../utils/spanish-vowels.js';
+
 	import {
 		currentWord,
 		currentResponse
 	} from '../stores/quiz-store.js';
 
     // set $currentResponse to unaccented version of word whenever $currentWord is updated
+    // updating of $currentWord is handled by the parent component
     $:  $currentResponse = $currentWord.split("").map(function(letter) {
             return removeAccentedVowels(letter);
             }).join('');
 
+    // component array (theLetters) binds to individual letter DIVs within letterContainer div
+    // letter DIVs bind to array, and array updates when $currentWord updates
     let theLetters = [];
 	$:  theLetters = $currentWord.split("").map(function(letter) {
 		return removeAccentedVowels(letter);
         });
 
     function toggleLetter(event) {
-        // get a reference to the character when mouse was clicked
+        // get a reference to the character before clearing all accents
         let aLetter = event.target.innerText;
-         // get DOM references to all elements of class interactiveLetter and iterate over array and clear all accents
+         // get DOM references to all elements of class interactiveLetter, iterate over array, and clear all accents
         document.querySelectorAll(".interactiveLetter").forEach(element => {
             element.innerText = removeAccentedVowels(element.innerText)
         });
-        // toggle character between accented/unaccented states
+        // toggle original character between accented/unaccented states
         event.target.innerText = toggleAccent(aLetter);
 
         // temp String for updated accentuation of word
@@ -72,8 +80,6 @@
     }
 </style>
 
-<div>
-</div>
 <div class="letterContainer">
 	{#each theLetters as aLetter}
         {#if (isAnyVowel(aLetter))}

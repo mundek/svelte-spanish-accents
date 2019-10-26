@@ -19,13 +19,12 @@
 
     $: if ($questionCounter > 0) {
         percentageCorrect = (Number.parseInt(($totalCorrect / $questionCounter) * 100));
-        } else {
-        percentageCorrect = '0';
         }
 
     $: $currentWord = $wordList[$questionCounter];
 
     $: if ($questionCounter) {
+        console.log('Quiz.svelte - $questionCounter binding');
         sayCurrentWord();
     }
 
@@ -143,5 +142,4 @@
     <h1>QUIZ</h1>
     <h3>Error: No word!</h3>
 {/if}
-<p>{$totalCorrect} correct ({percentageCorrect}%)</p>
-<p>{$wordList.length - $questionCounter} of {$wordList.length} remaining</p>
+<p>&#x02A79; {$totalCorrect} correct ({percentageCorrect}%) &#x029BF; {$wordList.length - $questionCounter} of {$wordList.length} remaining &#x02A7A;</p>

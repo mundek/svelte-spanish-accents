@@ -1,3 +1,5 @@
+// Utility library for handling the testing for, and display of, accented and unaccented vowels in Spanish
+
 // Configure hashes for testing accented and unaccented characters
 // In this case, all characters are vowels
 let addAccentHash = {
@@ -34,7 +36,8 @@ export function removeAccentedVowels(aChar) {
     }
 }
 
-// Hardcore implementation for large variety of accents that shouldn't ever be in the Spanish input
+// hardcore implementation removeAccentedVowels(aChar)
+// matches a large variety of accents that shouldn't ever be in the Spanish input
 /*  export function removeAccentedVowels(aChar) {
     // adapted from stackoverflow: https://stackoverflow.com/questions/286921/efficiently-replace-all-accented-characters-in-a-string
     // only matches Spanish vowels; does NOT remove 'crema' from \u00DC or \u00FC (Ü and ü, respectively)
@@ -73,6 +76,7 @@ export function isAnyVowel(aChar) {
     }
 }
 
+/*
 // Unused - Available but probably unnecessary
 export function isAccentedVowel(aChar) {
     if (removeAccentHash[aChar]) {
@@ -90,3 +94,4 @@ export function isUnaccentedVowel(aChar) {
         return false;
     }
 }
+*/

@@ -13,6 +13,7 @@
 	import { replace } from 'svelte-spa-router';
 
     onMount(() => {
+        window.responsiveVoice.cancel();
         // console.log('onMount() - Start.svelte');
         // get things started by resetting control-related data in quiz-store.js
         $currentWord = '';
@@ -23,7 +24,7 @@
     });
 
     function startQuiz() {
-    //  use svelte-spa-router 'replace' method to navigate to quiz component
+        //  use svelte-spa-router 'replace' method to navigate to quiz component
         replace("/quiz");
     }
 </script>

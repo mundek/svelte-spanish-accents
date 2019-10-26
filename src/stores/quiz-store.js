@@ -1,25 +1,27 @@
 import { readable, writable } from 'svelte/store';
 
-// export const wordList = writable([
-//     'función',
-//     'lingüística',
-//     'esdrújula',
-//     'albóndigas',
-//     'reloj'
-// ]);
+export const wordList = writable([
+    'función',
+    'lingüística',
+    'esdrújula',
+    'albóndigas',
+    'reloj'
+]);
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // WARNING: ResponsiveVoice pronounces "hablara" as "hablará" 
-export const wordList = writable([
-    'hablara',
-    'hablará',
-    'tomara',
-    'contara',
-    'hable',
-    'hablé',
-    'habló',
-    'hablo'
-]);
+// WHAT ELSE does it get wrong?
+//
+// export const wordList = writable([
+//     'hablara',
+//     'hablará',
+//     'tomara',
+//     'contara',
+//     'hable',
+//     'hablé',
+//     'habló',
+//     'hablo'
+// ]);
 
 export const currentWord = writable('?');
 export const currentResponse = writable("");
