@@ -1,2 +1,2 @@
 # svelte-spanish-accents
-Single-page app to practice placing written accents on Spanish words based on their pronunciation
+Svelte-powered single-page app for practicing placing written accents on Spanish words based on their pronunciation. Uses svelte-spa-router (https://www.npmjs.com/package/svelte-spa-router).
