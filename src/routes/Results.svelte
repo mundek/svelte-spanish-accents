@@ -7,18 +7,12 @@
         userResponses,
         totalCorrect
     } from '../stores/quiz-store.js';
-    console.table($userResponses);
 
-    // $: columnCount = Math.ceil(Number.parseInt($numberList.length) / 10);
+    $: columnCount = Math.ceil(Number.parseInt($wordList.length) / 10);
 
-    // /* 
-    //     // pre-filled lists for debugging
-    //     // $LISTLISTLIST = ['práctico', 'practico', 'practicó']
-    //     // $userResponses = ['práctico', 'practicó', 'practicó']
-    // */
-    // function restartQuiz() {
-    //     replace("/");
-    // }
+    function restartQuiz() {
+        replace("/");
+    }
 </script>
 
 <style>
@@ -52,22 +46,16 @@
     } */
 </style>
 
-<h1>Results.svelte</h1>
-<!--
-<h3>RESULTS: {Number.parseInt(($totalCorrect/$numberList.length) * 100)}% correct 
-    <span style="color: #d8d8d8;">({$totalCorrect} of {$numberList.length})</span>
+<h3>RESULTS: {Number.parseInt(($totalCorrect/$wordList.length) * 100)}% correct 
+    <span style="color: #d8d8d8;">({$totalCorrect} of {$wordList.length})</span>
 </h3>
 <div style="column-count: {columnCount}; columns: {columnCount};">
     <ul>
-    {#each $numberList as aNumber, i}
-        <li><ResultsRightWrong 
-                aQuizNumber={aNumber} 
-                aQuizResponse={$userResponses[i]} 
-            /></li>
+    {#each $wordList as aWord, i}
+        <li>{aWord} | {$userResponses[i]}</li>
     {/each}
     </ul>
 </div>
 <button class="restartButton"
     type="button"
     on:click="{restartQuiz}">Restart</button>
--->

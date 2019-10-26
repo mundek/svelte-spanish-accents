@@ -30,7 +30,7 @@
     }
 
     onMount(() => {
-        console.log('onMount()');
+        // console.log('Quiz.svelte - onMount()');
         // get things started by saying the first number when component mounts
         sayCurrentWord();
     });
