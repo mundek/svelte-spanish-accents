@@ -1,11 +1,16 @@
 import { readable, writable } from 'svelte/store';
 
 export const wordList = writable([
+    'almuerzo',
+    'camino', 
     'función',
     'lingüística',
+    'habló',
+    'acciones',
+    'fácil',
     'esdrújula',
+    'almorzó',
     'albóndigas',
-    'reloj'
 ]);
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

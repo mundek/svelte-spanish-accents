@@ -24,7 +24,7 @@
     $: $currentWord = $wordList[$questionCounter];
 
     $: if ($questionCounter) {
-        console.log('Quiz.svelte - $questionCounter binding');
+        // console.log('Quiz.svelte - $questionCounter binding');
         sayCurrentWord();
     }
 
