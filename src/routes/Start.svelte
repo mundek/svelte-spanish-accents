@@ -30,14 +30,29 @@
 </script>
 
 <style>
-
+    button {
+        border-radius: 12px;
+        border: 3px solid #00E;
+        display: inline-block;
+        cursor: pointer;
+        color: #ff0000;
+        padding: auto;
+        font-size: 24px;
+        font-style: bold;
+        text-align: center;
+        width: 12em;
+    }
 </style>
 
 <form>
     <div class="container">
-        <div class="start">
+        <p></p>
+        <p></p>
+        <div class="start" align="center">
             <button on:click|preventDefault="{startQuiz}">Start Quiz</button>
-        </div>    
+        </div>
+        <p></p>
+        <p></p>
     </div>
 </form>
 

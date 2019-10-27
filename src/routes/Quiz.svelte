@@ -79,7 +79,7 @@
         border-radius: 3px;
         border: 1px solid #00E;
         cursor: pointer;
-        color: #ff0000;
+        color: #ee1111;
         padding: auto;
         justify-self: end;
     }
@@ -89,11 +89,30 @@
         border: 1px solid #00E;
         display: inline-block;
         cursor: pointer;
-        color: #ff0000;
+        color: #ee1111;
         padding: auto;
     }
-
+    .quizContainer {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "wordContainer"
+            "controlButtons"
+            "progressDisplay";
+    }
+    .controlButtons { 
+        grid-area: controlButtons;
+        justify-self: center;
+        margin: 4px 0px;
+    }
+    .progressDisplay {
+        grid-area: progressDisplay;
+        justify-self: center;
+        margin: 4px 0px;
+    }
     .wordContainer {
+        grid-area: wordContainer;
 		display: grid;
 		grid-auto-columns: fit-content(1em);
 		grid-auto-flow: column;
@@ -114,32 +133,37 @@
             currentWord: <span style="color: #ff0000;">{$currentWord}</span> | 
             currentResponse: <span style="color: #6666ff;">{$currentResponse}</span>
         </p> -->
-
-        <div class="wordContainer">
-            <!-- Word component imports necessary quiz-store.js data itself; binds to $questionCounter from quiz-store.js to update to current word-->
-            <Word />
+        <div class="quizContainer">
+            <div class="wordContainer">
+                <!-- Word component imports necessary quiz-store.js data itself; binds to $questionCounter from quiz-store.js to update to current word-->
+                <Word />
+            </div>
+            <div class="controlButtons">
+                <button class="playSound"
+                    type="button" 
+                    on:click="{sayCurrentWord}">
+                    <img src={$audioIconPath} 
+                        alt="play sound" 
+                        width="20px" height="20px" 
+                    />
+                </button>
+                <button class="submitButton"
+                    type="submit"
+                    on:submit="{submitAnswer}">
+                    Check
+                </button>
+                        <button class="endQuiz"
+                    type="button"
+                    on:click="{presentResults}">
+                    End
+                </button>
+            </div>
+            <div class="progressDisplay">
+                &#x02A79; {$totalCorrect} correct ({percentageCorrect}%) &#x0226C; {$wordList.length - $questionCounter} of {$wordList.length} remaining &#x02A7A;
+            </div>
         </div>
-        <button class="playSound"
-            type="button" 
-            on:click="{sayCurrentWord}">
-            <img src={$audioIconPath} 
-                alt="play sound" 
-                width="20px" height="20px" 
-            />
-        </button>
-        <button class="submitButton"
-            type="submit"
-            on:submit="{submitAnswer}">
-            Check
-        </button>
-                <button class="endQuiz"
-            type="button"
-            on:click="{presentResults}">
-            End
-        </button>
     </form>
 {:else}
     <h1>QUIZ</h1>
     <h3>Error: No word!</h3>
 {/if}
-<p>&#x02A79; {$totalCorrect} correct ({percentageCorrect}%) &#x029BF; {$wordList.length - $questionCounter} of {$wordList.length} remaining &#x02A7A;</p>
