@@ -122,11 +122,11 @@
             </div>
             <div id="{flashValue}">
                 <div class="progressDisplay">
-                    <span id="shiny">&#x02A79; </span>
+                    <span id="shiny">&ltcir; </span>
                     {$totalCorrect} correct ({percentageCorrect}%) 
-                    <span id="shiny"> &#x0226C; </span>
+                    <span id="shiny"> &twixt; </span>
                     {$wordList.length - $questionCounter} of {$wordList.length} remaining
-                    <span id="shiny"> &#x02A79;</span>
+                    <span id="shiny"> &gtcir;</span>
                 </div>
             </div>
         </div>
