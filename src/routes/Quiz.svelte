@@ -16,6 +16,7 @@
     // console.log($wordList);
 
     let percentageCorrect = 0;
+    let flashValue = "progressDisplayContainer";
 
     $: if ($questionCounter > 0) {
         percentageCorrect = (Number.parseInt(($totalCorrect / $questionCounter) * 100));
@@ -48,7 +49,16 @@
         // evaluate user's response against correct answer
         if($currentResponse === $currentWord) {
             $totalCorrect++;
+            flashValue = "progressDisplayContainerCorrect";
+            await tick();
+        } else {
+            flashValue = "progressDisplayContainerWrong";
+            await tick();
         }
+        setTimeout(function(){ 
+                flashValue = "progressDisplayContainer";
+        }, 2000);
+
         // record user's response for post-quiz results output
         $userResponses[$questionCounter] = $currentResponse;
 
@@ -73,6 +83,59 @@
         replace("/results");
     }
 </script>
+
+{#if $currentWord}
+    <form on:submit|preventDefault="{submitAnswer}">
+        <h3 style="margin: 1px 1px; padding: 1px;">
+            Correctly indicate the written accent of the word, if any
+        </h3>
+
+        <!-- Debugging output -->
+        <!-- <p>
+            currentWord: <span style="color: #ff0000;">{$currentWord}</span> | 
+            currentResponse: <span style="color: #6666ff;">{$currentResponse}</span>
+        </p> -->
+        <div class="quizContainer">
+            <div class="wordContainer">
+                <!-- Word component imports necessary quiz-store.js data itself; binds to $questionCounter from quiz-store.js to update to current word-->
+                <Word />
+            </div>
+            <div class="controlButtons">
+                <button class="playSound"
+                    type="button" 
+                    on:click="{sayCurrentWord}">
+                    <img src={$audioIconPath} 
+                        alt="play sound" 
+                        width="20px" height="20px" 
+                    />
+                </button>
+                <button class="submitButton"
+                    type="submit"
+                    on:submit="{submitAnswer}">
+                    Check
+                </button>
+                <button class="endQuiz"
+                    type="button"
+                    on:click="{presentResults}">
+                    End
+                </button>
+            </div>
+            <div id="{flashValue}">
+                <div class="progressDisplay">
+                    <span id="shiny">&#x02A79; </span>
+                    {$totalCorrect} correct ({percentageCorrect}%) 
+                    <span id="shiny"> &#x0226C; </span>
+                    {$wordList.length - $questionCounter} of {$wordList.length} remaining
+                    <span id="shiny"> &#x02A79;</span>
+                </div>
+            </div>
+        </div>
+    </form>
+{:else}
+    <h1>QUIZ</h1>
+    <h3>Error: No word!</h3>
+{/if}
+
 
 <style>
     .playSound {
@@ -120,50 +183,59 @@
 		background-color:#3333ff;
 		margin: 13px 1px;
 	}
+
+    /* The animation code */
+
+    /* The basic style of the animated elements */
+    #progressDisplayContainer {
+        background-color: white;
+        animation-name: none;
+        justify-self: center;
+        font-weight: 400;
+    }
+    #shiny {
+        justify-self: center;
+        font-weight: 400;
+        animation-name: theshining;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+
+    }
+
+    /* keyframes and alt styles for (in)correct responses */
+    @keyframes correctAnswer {
+        0%   {background-color: transparent;}
+        50%  {background-color: green;}
+        100%  {background-color: transparent;}
+    }
+    #progressDisplayContainerCorrect {
+        justify-self: center;
+        background-color: transparent;
+        animation-name: correctAnswer;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+    }
+    @keyframes wrongAnswer {
+        0%   {background-color: transparent;}
+        50%  {background-color:red;}
+        100%  {background-color: transparent;}
+    }
+    #progressDisplayContainerWrong {
+        justify-self: center;
+        background-color: transparent;
+        animation-name: wrongAnswer;;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+    }
+    @keyframes theshining {
+        0%   {color: white;}
+        12%   {color: blue;}
+        25%   {color: green;}
+        37%   {color: red;}
+        50%   {color: black;}
+        63%   {color: red;}
+        75%   {color: green;}
+        88%   {color: blue;}
+        100%   {color: white;}
+    }
 </style>
-
-{#if $currentWord}
-    <form on:submit|preventDefault="{submitAnswer}">
-        <h3 style="margin: 1px 1px; padding: 1px;">
-            Correctly indicate the written accent of the word, if any
-        </h3>
-
-        <!-- Debugging output -->
-        <!-- <p>
-            currentWord: <span style="color: #ff0000;">{$currentWord}</span> | 
-            currentResponse: <span style="color: #6666ff;">{$currentResponse}</span>
-        </p> -->
-        <div class="quizContainer">
-            <div class="wordContainer">
-                <!-- Word component imports necessary quiz-store.js data itself; binds to $questionCounter from quiz-store.js to update to current word-->
-                <Word />
-            </div>
-            <div class="controlButtons">
-                <button class="playSound"
-                    type="button" 
-                    on:click="{sayCurrentWord}">
-                    <img src={$audioIconPath} 
-                        alt="play sound" 
-                        width="20px" height="20px" 
-                    />
-                </button>
-                <button class="submitButton"
-                    type="submit"
-                    on:submit="{submitAnswer}">
-                    Check
-                </button>
-                        <button class="endQuiz"
-                    type="button"
-                    on:click="{presentResults}">
-                    End
-                </button>
-            </div>
-            <div class="progressDisplay">
-                &#x02A79; {$totalCorrect} correct ({percentageCorrect}%) &#x0226C; {$wordList.length - $questionCounter} of {$wordList.length} remaining &#x02A7A;
-            </div>
-        </div>
-    </form>
-{:else}
-    <h1>QUIZ</h1>
-    <h3>Error: No word!</h3>
-{/if}
