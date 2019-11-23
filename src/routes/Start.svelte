@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
 
     import {
+        wordList,
         currentWord,
         questionCounter,
         currentResponse,
@@ -14,8 +15,8 @@
 
     onMount(() => {
         window.responsiveVoice.cancel();
-        // console.log('onMount() - Start.svelte');
         // get things started by resetting control-related data in quiz-store.js
+        $wordList = [];
         $currentWord = '';
         $questionCounter = 0;
         $currentResponse = '';
@@ -28,6 +29,19 @@
         replace("/quiz");
     }
 </script>
+
+<form>
+    <div class="container">
+        <p></p>
+        <p></p>
+        <div class="start" align="center">
+            <button on:click|preventDefault="{startQuiz}">Start Quiz</button>
+        </div>
+        <p></p>
+        <p></p>
+    </div>
+</form>
+
 
 <style>
     button {
@@ -43,16 +57,3 @@
         width: 12em;
     }
 </style>
-
-<form>
-    <div class="container">
-        <p></p>
-        <p></p>
-        <div class="start" align="center">
-            <button on:click|preventDefault="{startQuiz}">Start Quiz</button>
-        </div>
-        <p></p>
-        <p></p>
-    </div>
-</form>
-

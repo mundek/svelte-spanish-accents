@@ -20,6 +20,24 @@
     }
 </script>
 
+<h3>RESULTS: {Number.parseInt(($totalCorrect/$userResponses.length) * 100)}% correct 
+    <span style="color: #d8d8d8;">({$totalCorrect} of {$userResponses.length})</span>
+</h3>
+
+<div style="column-count: {columnCount}; columns: {columnCount};">
+    <ul>
+    {#each $userResponses as aResponse, i}
+        <li><ResultsRightWrong aQuizWord={$wordList[i]} aQuizResponse={aResponse}/></li>
+    {/each}
+    </ul>
+</div>
+
+<button class="restartButton"
+    type="button"
+    on:click="{restartQuiz}">
+        Restart
+</button>
+
 <style>
     h3 {
         padding-left: 10px;
@@ -38,10 +56,6 @@
     display: inline-block;
     width: 100%;
     }
-    li {
-        display: inline-block;
-        width: 100%;
-    }
     div {
         column-gap: 15px;
     }
@@ -50,21 +64,3 @@
         display: block;
     }
 </style>
-
-<h3>RESULTS: {Number.parseInt(($totalCorrect/$userResponses.length) * 100)}% correct 
-    <span style="color: #d8d8d8;">({$totalCorrect} of {$userResponses.length})</span>
-</h3>
-
-<div style="column-count: {columnCount}; columns: {columnCount};">
-    <ul>
-    {#each $userResponses as aResponse, i}
-        <li><ResultsRightWrong aQuizWord={$wordList[i]} aQuizResponse={aResponse}/></li>
-    {/each}
-    </ul>
-</div>
-
-<button class="restartButton"
-    type="button"
-    on:click="{restartQuiz}">
-        Restart
-</button>

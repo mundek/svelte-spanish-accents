@@ -2,10 +2,11 @@
     import { onMount, tick } from 'svelte';
     import { replace } from 'svelte-spa-router';
 
-	import Word from '../widgets/spanishWord.svelte';
+    import Word from '../widgets/spanishWord.svelte';
 
     import {
         wordList,
+        masterWordList,
         currentWord,
         questionCounter,
         currentResponse,
@@ -13,10 +14,10 @@
         totalCorrect,
         audioIconPath
     } from '../stores/quiz-store.js';
-    // console.log($wordList);
 
     let percentageCorrect = 0;
     let flashValue = "progressDisplayContainer";
+    randomizeWordList(10);
 
     $: if ($questionCounter > 0) {
         percentageCorrect = (Number.parseInt(($totalCorrect / $questionCounter) * 100));
@@ -25,12 +26,10 @@
     $: $currentWord = $wordList[$questionCounter];
 
     $: if ($questionCounter) {
-        // console.log('Quiz.svelte - $questionCounter binding');
         sayCurrentWord();
     }
 
     onMount(() => {
-        // console.log('Quiz.svelte - onMount()');
         // get things started by saying the first number when component mounts
         sayCurrentWord();
     });
@@ -41,6 +40,19 @@
                 $currentWord,
                 "Spanish Latin American Female");
         }
+    }
+
+    function randomizeWordList(listLength) {
+        // local newArray avoids changing original array, which will have been passed as a reference
+        let newArray = $masterWordList.slice();
+        // Array randomization code from https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
+        for(let i = newArray.length - 1; i > 0; i--){
+            const j = Math.floor(Math.random() * i)
+            const temp = newArray[i];
+            newArray[i] = newArray[j];
+            newArray[j] = temp;
+        }
+        $wordList = newArray.slice(0, listLength);
     }
 
     async function submitAnswer(event) {
@@ -135,7 +147,6 @@
     <h1>QUIZ</h1>
     <h3>Error: No word!</h3>
 {/if}
-
 
 <style>
     .playSound {
