@@ -83,7 +83,7 @@ export const masterWordList = writable([
     'esponja',
     'hirvió',
     'flaco',
-    'azúl',
+    'azul',
     'marrón',
     'púrpura',
     'ejercicio',
