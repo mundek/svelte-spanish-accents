@@ -94,7 +94,6 @@ export const masterWordList = writable([
     'continúan',
     'creciente',
     'cree',
-    'creía',
     'cualquier',
     'cálculo',
     'células',
